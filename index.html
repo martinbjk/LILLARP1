@@ -294,7 +294,7 @@
     <p class="hero-eyebrow">Halmstad &nbsp;·&nbsp; Halland &nbsp;·&nbsp; Sverige</p>
     <h1 class="hero-title"><em>Lillarp</em></h1>
     <p class="hero-sub">Vår gemensamma sommarstuga sedan generationer</p>
-    <div class="hero-badge">📍 Halmstad 442, 305 91 Halmstad</div>
+    <div class="hero-badge">📍 56°41'18"N &nbsp;12°44'13"E</div>
   </div>
   <div class="hero-scroll"><span>↓</span>utforska</div>
 </div>
@@ -464,7 +464,7 @@
 </div>
 
 <footer>
-  <p><strong>Lillarp</strong> &nbsp;·&nbsp; Halmstad 442, 305 91 Halmstad</p>
+  <p><strong>Lillarp</strong> &nbsp;·&nbsp; 56°41'18"N &nbsp;12°44'13"E &nbsp;·&nbsp; Halmstad 442, 305 91 Halmstad</p>
   <p style="margin-top:0.35rem;">🌿 En plats att längta till – varje sommar</p>
 </footer>
 
@@ -479,70 +479,103 @@
 
   function pe(){const t=document.getElementById('dt').value.trim();if(!t)return;const f=document.getElementById('df').value;const n=document.getElementById('dn').value.trim()||'Anonym';const d=new Date().toLocaleDateString('sv-SE',{year:'numeric',month:'long',day:'numeric'});const el=document.createElement('div');el.className=`de f${f}`;el.innerHTML=`<div class="de-meta"><span class="de-auth">Familj ${f} – ${n}</span><span class="de-date">${d}</span></div><p>${t}</p>`;document.getElementById('dl').insertBefore(el,document.getElementById('dl').firstChild);document.getElementById('dt').value='';document.getElementById('dn').value='';}
 
-  // ── LIVE SMHI VÄDER ──
-  // Stationer: Ringenäs (72420) och Tylösand (72340) – SMHI observationsdata
-  // Parameter-IDs: 1=lufttemp, 4=vindhast, 5=vindriktning, 9=lufttryck, 6=relativ fuktighet, 21=vindby
-  const SMHI_BASE = 'https://opendata-download-metobs.smhi.se/api/version/latest';
+  // ── LIVE SMHI VÄDER via punktprognosAPI (pmp3g) ──
+  // Ringenäs: 56.6942, 12.6947  |  Tylösand: 56.6578, 12.7378
+  const PMP = 'https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point';
 
-  const DIRS = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSV','SV','VSV','V','VNV','NV','NNV','N'];
-  function degToDir(d) { return DIRS[Math.round(d/22.5)]; }
-
-  function windDesc(ms) {
+  const WDIRS = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSV','SV','VSV','V','VNV','NV','NNV','N'];
+  function degDir(d) { return WDIRS[Math.round((d % 360) / 22.5)]; }
+  function beaufortDesc(ms) {
     if (ms < 0.5) return '🌬 Stilla';
-    if (ms < 3.4) return '🌬 Lätt bris';
-    if (ms < 7.9) return '💨 Måttlig vind';
-    if (ms < 13.8) return '💨 Frisk vind';
-    if (ms < 20.7) return '🌀 Hård vind';
+    if (ms < 1.6) return '🍃 Nästan stilla';
+    if (ms < 3.4) return '🍃 Lätt bris';
+    if (ms < 5.5) return '💨 Svag bris';
+    if (ms < 8.0) return '💨 Måttlig bris';
+    if (ms < 10.8) return '💨 Frisk bris';
+    if (ms < 13.9) return '🌀 Hård bris';
+    if (ms < 17.2) return '🌀 Hård vind';
+    if (ms < 20.8) return '🌀 Mycket hård vind';
     return '🌪 Storm';
   }
 
-  async function smhiParam(stationId, paramId) {
-    try {
-      const url = `${SMHI_BASE}/parameter/${paramId}/station/${stationId}/period/latest-hour/data.json`;
-      const r = await fetch(url);
-      if (!r.ok) return null;
-      const j = await r.json();
-      const vals = j.value;
-      if (!vals || vals.length === 0) return null;
-      return parseFloat(vals[vals.length - 1].value);
-    } catch { return null; }
+  function getParam(params, name) {
+    const p = params.find(x => x.name === name);
+    return p ? p.values[0] : null;
   }
 
-  async function loadStation(stationId, prefix) {
-    const [temp, wind, dir, pres, hum, gust] = await Promise.all([
-      smhiParam(stationId, 1),
-      smhiParam(stationId, 4),
-      smhiParam(stationId, 5),
-      smhiParam(stationId, 9),
-      smhiParam(stationId, 6),
-      smhiParam(stationId, 21),
-    ]);
+  async function fetchSMHI(lat, lon) {
+    const url = `${PMP}/lon/${lon}/lat/${lat}/data.json`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('SMHI fel');
+    const j = await r.json();
+    // Hitta närmast aktuellt tidssteg
+    const now = Date.now();
+    let best = j.timeSeries[0];
+    for (const ts of j.timeSeries) {
+      const t = new Date(ts.validTime).getTime();
+      if (t <= now) best = ts;
+      else break;
+    }
+    const p = best.parameters;
+    return {
+      temp:  getParam(p, 't'),
+      wind:  getParam(p, 'ws'),
+      wdir:  getParam(p, 'wd'),
+      pres:  getParam(p, 'msl'),
+      hum:   getParam(p, 'r'),
+      gust:  getParam(p, 'gust'),
+      wsymb: getParam(p, 'Wsymb2'),
+    };
+  }
 
-    const fmt = (v, unit) => v !== null ? `${v}${unit}` : '–';
-    const windStr = wind !== null && dir !== null
-      ? `${wind} m/s ${degToDir(dir)}`
-      : fmt(wind, ' m/s');
+  function wsymbIcon(n) {
+    if (!n) return '🌡';
+    if (n === 1) return '☀️';
+    if (n === 2) return '🌤';
+    if (n <= 4) return '⛅';
+    if (n <= 6) return '☁️';
+    if (n === 7) return '🌫';
+    if (n <= 10) return '🌦';
+    if (n <= 13) return '⛈';
+    if (n <= 16) return '🌩';
+    if (n <= 19) return '🌨';
+    if (n <= 22) return '❄️';
+    if (n <= 25) return '🌧';
+    if (n <= 27) return '🌨';
+    return '🌡';
+  }
 
-    document.getElementById(`${prefix}-temp`).textContent = temp !== null ? `${temp}°C` : '–°C';
-    document.getElementById(`${prefix}-desc`).textContent = wind !== null ? windDesc(wind) : 'Ingen data';
-    document.getElementById(`${prefix}-wind`).textContent = windStr;
-    document.getElementById(`${prefix}-pres`).textContent = fmt(pres, ' hPa');
-    document.getElementById(`${prefix}-hum`).textContent = fmt(hum, '%');
-    document.getElementById(`${prefix}-gust`).textContent = fmt(gust, ' m/s');
+  function renderStation(prefix, d) {
+    const fmt = (v, u) => v !== null && v !== undefined ? `${Math.round(v*10)/10}${u}` : '–';
+    const icon = wsymbIcon(d.wsymb);
+    const wdesc = d.wind !== null ? beaufortDesc(d.wind) : '–';
+    const wstr  = d.wind !== null ? `${Math.round(d.wind*10)/10} m/s ${d.wdir !== null ? degDir(d.wdir) : ''}` : '–';
+    document.getElementById(`${prefix}-temp`).textContent = d.temp !== null ? `${Math.round(d.temp*10)/10}°C` : '–°C';
+    document.getElementById(`${prefix}-desc`).textContent = `${icon} ${wdesc}`;
+    document.getElementById(`${prefix}-wind`).textContent = wstr;
+    document.getElementById(`${prefix}-pres`).textContent = fmt(d.pres, ' hPa');
+    document.getElementById(`${prefix}-hum`).textContent  = fmt(d.hum, '%');
+    document.getElementById(`${prefix}-gust`).textContent = fmt(d.gust, ' m/s');
   }
 
   async function loadWeather() {
-    await Promise.all([
-      loadStation(72420, 'r'),  // Ringenäs
-      loadStation(72340, 't'),  // Tylösand
-    ]);
-    const now = new Date();
-    const ts = now.toLocaleString('sv-SE', {weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
-    document.getElementById('w-timestamp').textContent = `Live SMHI-data · ${ts}`;
+    try {
+      const [rData, tData] = await Promise.all([
+        fetchSMHI(56.6942, 12.6947),  // Ringenäs
+        fetchSMHI(56.6578, 12.7378),  // Tylösand
+      ]);
+      renderStation('r', rData);
+      renderStation('t', tData);
+      const ts = new Date().toLocaleString('sv-SE', {weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
+      document.getElementById('w-timestamp').textContent = `Live SMHI-prognos · ${ts}`;
+    } catch(e) {
+      document.getElementById('w-timestamp').textContent = 'Kunde inte hämta väderdata – försök igen';
+      console.error('SMHI fetch error:', e);
+    }
   }
 
   loadWeather();
-  setInterval(loadWeather, 10 * 60 * 1000); // uppdatera var 10:e minut
+  setInterval(loadWeather, 10 * 60 * 1000);
 
   function ap(){const t=prompt('Projektnamn:');if(!t)return;const d=prompt('Beskrivning:')||'';const el=document.createElement('div');el.className='pjc';el.innerHTML=`<div class="pjh"><span class="pjt">💡 ${t}</span><span class="pb sp">Nytt</span></div><p class="pjd">${d}</p><div class="pbar"><div class="pfill" style="width:0%"></div></div>`;document.getElementById('pg').appendChild(el);}
 </script>
