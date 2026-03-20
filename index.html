@@ -207,7 +207,11 @@
     /* PROJEKT */
     .pj-bg{background:linear-gradient(160deg,#e5f0e5,#d8eef5);padding:3rem 2rem;}
     .pj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.9rem;max-width:920px;margin:0 auto 1.2rem;}
-    .pjc{background:white;border-radius:3px;padding:1.1rem;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+    .pjc{background:white;border-radius:3px;padding:1.1rem;box-shadow:0 2px 10px rgba(0,0,0,0.05);position:relative;}
+    .pjc:hover .pj-del{opacity:1;}
+    .pj-del{position:absolute;top:0.6rem;right:0.6rem;background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;opacity:0;transition:opacity 0.2s,color 0.2s;line-height:1;padding:2px 5px;}
+    .pj-del:hover{color:#c05040;}
+    .pj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.9rem;max-width:920px;margin:0 auto 1.2rem;}
     .pjh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;}
     .pjt{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--pine);font-weight:600;}
     .pb{font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:7px;}
@@ -411,14 +415,7 @@
 <!-- PROJEKT -->
 <div class="pj-bg" id="projekt">
   <div class="sh reveal"><h2>Projekt &amp; Planering</h2><div class="div"></div><p>Förbättringar, renoveringar och drömmar</p></div>
-  <div class="pj-grid reveal" id="pg">
-    <div class="pjc"><div class="pjh"><span class="pjt">🎨 Måla fasaden</span><span class="pb sp">Planerat</span></div><p class="pjd">Byta färg på ytterpanelen. Alla tre familjer röstar på färgval.</p><div class="pbar"><div class="pfill" style="width:10%"></div></div></div>
-    <div class="pjc"><div class="pjh"><span class="pjt">🌱 Trädgårdsodling</span><span class="pb sg">Pågår</span></div><p class="pjd">Köksträdgård med jordgubbar, örter och grönsaker.</p><div class="pbar"><div class="pfill" style="width:45%"></div></div></div>
-    <div class="pjc"><div class="pjh"><span class="pjt">🛁 Uppgradera badrum</span><span class="pb sp">Planerat</span></div><p class="pjd">Ny dusch och klinkers. Budget tas fram inför nästa säsong.</p><div class="pbar"><div class="pfill" style="width:5%"></div></div></div>
-    <div class="pjc"><div class="pjh"><span class="pjt">☀️ Solpaneler</span><span class="pb sp">Idé</span></div><p class="pjd">Undersöka solceller på taket för lägre elkostnad.</p><div class="pbar"><div class="pfill" style="width:0%"></div></div></div>
-    <div class="pjc"><div class="pjh"><span class="pjt">🪴 Utemöbler</span><span class="pb sd">Klart</span></div><p class="pjd">Ny utemöbelgrupp och parasoll inköpta inför 2026.</p><div class="pbar"><div class="pfill" style="width:100%"></div></div></div>
-    <div class="pjc"><div class="pjh"><span class="pjt">🔒 Nytt lås</span><span class="pb sd">Klart</span></div><p class="pjd">Kodlås installerat. Alla familjer har fått koden.</p><div class="pbar"><div class="pfill" style="width:100%"></div></div></div>
-  </div>
+  <div class="pj-grid reveal" id="pg"></div>
   <button class="add-b" onclick="ap()">+ Nytt projekt</button>
 </div>
 
@@ -535,7 +532,108 @@
   loadWeather();
   setInterval(loadWeather, 10 * 60 * 1000);
 
-  function ap(){const t=prompt('Projektnamn:');if(!t)return;const d=prompt('Beskrivning:')||'';const el=document.createElement('div');el.className='pjc';el.innerHTML=`<div class="pjh"><span class="pjt">💡 ${t}</span><span class="pb sp">Nytt</span></div><p class="pjd">${d}</p><div class="pbar"><div class="pfill" style="width:0%"></div></div>`;document.getElementById('pg').appendChild(el);}
+  // ── PROJEKT med localStorage ──
+  const PROJ_KEY = 'lillarp_projects_v1';
+  const DEFAULT_PROJECTS = [
+    { id:1, icon:'🎨', title:'Måla fasaden',      status:'sp', statusLabel:'Planerat', desc:'Byta färg på ytterpanelen. Alla tre familjer röstar på färgval.',          progress:10  },
+    { id:2, icon:'🌱', title:'Trädgårdsodling',   status:'sg', statusLabel:'Pågår',    desc:'Köksträdgård med jordgubbar, örter och grönsaker.',                        progress:45  },
+    { id:3, icon:'🛁', title:'Uppgradera badrum',  status:'sp', statusLabel:'Planerat', desc:'Ny dusch och klinkers. Budget tas fram inför nästa säsong.',               progress:5   },
+    { id:4, icon:'☀️', title:'Solpaneler',         status:'sp', statusLabel:'Idé',      desc:'Undersöka solceller på taket för lägre elkostnad.',                        progress:0   },
+    { id:5, icon:'🪴', title:'Utemöbler',          status:'sd', statusLabel:'Klart',    desc:'Ny utemöbelgrupp och parasoll inköpta inför 2026.',                        progress:100 },
+    { id:6, icon:'🔒', title:'Nytt lås',           status:'sd', statusLabel:'Klart',    desc:'Kodlås installerat. Alla familjer har fått koden.',                        progress:100 },
+  ];
+
+  function loadProjects() {
+    try {
+      const raw = localStorage.getItem(PROJ_KEY);
+      return raw ? JSON.parse(raw) : DEFAULT_PROJECTS;
+    } catch { return DEFAULT_PROJECTS; }
+  }
+
+  function saveProjects(projects) {
+    try { localStorage.setItem(PROJ_KEY, JSON.stringify(projects)); } catch {}
+  }
+
+  function renderProject(p) {
+    const el = document.createElement('div');
+    el.className = 'pjc';
+    el.dataset.id = p.id;
+    el.innerHTML = `
+      <button class="pj-del" title="Ta bort projekt" onclick="deleteProject(${p.id})">✕</button>
+      <div class="pjh">
+        <span class="pjt">${p.icon} ${p.title}</span>
+        <span class="pb ${p.status}" onclick="cycleStatus(${p.id})" style="cursor:pointer" title="Klicka för att byta status">${p.statusLabel}</span>
+      </div>
+      <p class="pjd">${p.desc}</p>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem;">
+        <div class="pbar" style="flex:1"><div class="pfill" style="width:${p.progress}%"></div></div>
+        <span style="font-size:0.7rem;color:#aaa;width:2.5rem;text-align:right;">${p.progress}%</span>
+      </div>
+      <div style="display:flex;gap:0.3rem;margin-top:0.6rem;">
+        <input type="range" min="0" max="100" value="${p.progress}" style="flex:1;accent-color:var(--sea);cursor:pointer;" oninput="updateProgress(${p.id}, this.value, this)">
+      </div>`;
+    return el;
+  }
+
+  function renderAllProjects() {
+    const grid = document.getElementById('pg');
+    grid.innerHTML = '';
+    loadProjects().forEach(p => grid.appendChild(renderProject(p)));
+  }
+
+  function deleteProject(id) {
+    if (!confirm('Ta bort detta projekt?')) return;
+    const projects = loadProjects().filter(p => p.id !== id);
+    saveProjects(projects);
+    renderAllProjects();
+  }
+
+  const STATUS_CYCLE = [
+    { status:'sp', statusLabel:'Planerat' },
+    { status:'sg', statusLabel:'Pågår'    },
+    { status:'sd', statusLabel:'Klart'    },
+  ];
+
+  function cycleStatus(id) {
+    const projects = loadProjects();
+    const p = projects.find(x => x.id === id);
+    if (!p) return;
+    const idx = STATUS_CYCLE.findIndex(s => s.status === p.status);
+    const next = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
+    p.status = next.status;
+    p.statusLabel = next.statusLabel;
+    if (next.status === 'sd') p.progress = 100;
+    saveProjects(projects);
+    renderAllProjects();
+  }
+
+  function updateProgress(id, value, slider) {
+    const pct = parseInt(value);
+    // Update fill bar live without re-rendering whole grid
+    const card = slider.closest('.pjc');
+    card.querySelector('.pfill').style.width = pct + '%';
+    card.querySelector('span[style*="2.5rem"]').textContent = pct + '%';
+    // Debounce save
+    clearTimeout(slider._t);
+    slider._t = setTimeout(() => {
+      const projects = loadProjects();
+      const p = projects.find(x => x.id === id);
+      if (p) { p.progress = pct; saveProjects(projects); }
+    }, 400);
+  }
+
+  function ap() {
+    const title = prompt('Projektnamn:');
+    if (!title) return;
+    const desc = prompt('Beskrivning:') || '';
+    const projects = loadProjects();
+    const newId = Date.now();
+    projects.push({ id: newId, icon:'💡', title, status:'sp', statusLabel:'Planerat', desc, progress: 0 });
+    saveProjects(projects);
+    renderAllProjects();
+  }
+
+  renderAllProjects();
 </script>
 </body>
 </html>
