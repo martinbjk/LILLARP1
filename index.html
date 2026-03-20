@@ -374,33 +374,39 @@
 
 <!-- VÄDER -->
 <div class="w-bg" id="vader">
-  <div class="sh reveal"><h2>Vädret vid kusten</h2><div class="div"></div><p>Ringenäs och Tylösand · 19 mars 2026</p></div>
+  <div class="sh reveal"><h2>Vädret vid kusten</h2><div class="div"></div><p id="w-timestamp">Hämtar live data från SMHI…</p></div>
   <div class="w-grid reveal">
     <div class="wc">
       <div class="ws">📍 Ringenäs</div>
-      <div class="wt">8°C</div>
-      <div class="wd">🌤 Delvis molnigt · frisk vind från väster</div>
+      <div class="wt" id="r-temp">–°C</div>
+      <div class="wd" id="r-desc">Hämtar…</div>
       <div class="wg">
-        <div class="wi"><span class="wl">Vind</span><span class="wv">12 m/s V</span></div>
-        <div class="wi"><span class="wl">Lufttryck</span><span class="wv">1014 hPa</span></div>
-        <div class="wi"><span class="wl">Fuktighet</span><span class="wv">78%</span></div>
-        <div class="wi"><span class="wl">Våghöjd</span><span class="wv">1.2 m</span></div>
+        <div class="wi"><span class="wl">Vind</span><span class="wv" id="r-wind">–</span></div>
+        <div class="wi"><span class="wl">Lufttryck</span><span class="wv" id="r-pres">–</span></div>
+        <div class="wi"><span class="wl">Fuktighet</span><span class="wv" id="r-hum">–</span></div>
+        <div class="wi"><span class="wl">Vindby</span><span class="wv" id="r-gust">–</span></div>
       </div>
     </div>
     <div class="wc">
       <div class="ws">📍 Tylösand</div>
-      <div class="wt">9°C</div>
-      <div class="wd">🌥 Lätt molnigt · svag bris</div>
+      <div class="wt" id="t-temp">–°C</div>
+      <div class="wd" id="t-desc">Hämtar…</div>
       <div class="wg">
-        <div class="wi"><span class="wl">Vind</span><span class="wv">8 m/s SV</span></div>
-        <div class="wi"><span class="wl">Lufttryck</span><span class="wv">1015 hPa</span></div>
-        <div class="wi"><span class="wl">Fuktighet</span><span class="wv">74%</span></div>
-        <div class="wi"><span class="wl">Siktlängd</span><span class="wv">God</span></div>
+        <div class="wi"><span class="wl">Vind</span><span class="wv" id="t-wind">–</span></div>
+        <div class="wi"><span class="wl">Lufttryck</span><span class="wv" id="t-pres">–</span></div>
+        <div class="wi"><span class="wl">Fuktighet</span><span class="wv" id="t-hum">–</span></div>
+        <div class="wi"><span class="wl">Vindby</span><span class="wv" id="t-gust">–</span></div>
       </div>
     </div>
   </div>
-  <div class="w-foot">Observationer 19 mars 2026 via vagagenten &nbsp;·&nbsp;
-    <a href="https://www.smhi.se/vader/observationer/sjovader" target="_blank" style="color:#9ccce0;">SMHI sjöväder →</a>
+  <div class="w-foot" style="margin-top:1.2rem;">
+    <a href="https://martinbjk.github.io/RingnasTylesand/" target="_blank"
+       style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:2px;padding:0.45rem 1.1rem;color:white;text-decoration:none;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;transition:background 0.2s;"
+       onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+      🌊 Öppna Vågagenten – fullständig våginfo
+    </a>
+    &nbsp;·&nbsp;
+    <a href="https://www.smhi.se/vader/observationer/sjovader" target="_blank" style="color:#9ccce0;font-size:0.75rem;">SMHI sjöväder →</a>
   </div>
 </div>
 
@@ -472,6 +478,71 @@
   document.getElementById('gm').addEventListener('click',function(e){if(e.target===this)cm();});
 
   function pe(){const t=document.getElementById('dt').value.trim();if(!t)return;const f=document.getElementById('df').value;const n=document.getElementById('dn').value.trim()||'Anonym';const d=new Date().toLocaleDateString('sv-SE',{year:'numeric',month:'long',day:'numeric'});const el=document.createElement('div');el.className=`de f${f}`;el.innerHTML=`<div class="de-meta"><span class="de-auth">Familj ${f} – ${n}</span><span class="de-date">${d}</span></div><p>${t}</p>`;document.getElementById('dl').insertBefore(el,document.getElementById('dl').firstChild);document.getElementById('dt').value='';document.getElementById('dn').value='';}
+
+  // ── LIVE SMHI VÄDER ──
+  // Stationer: Ringenäs (72420) och Tylösand (72340) – SMHI observationsdata
+  // Parameter-IDs: 1=lufttemp, 4=vindhast, 5=vindriktning, 9=lufttryck, 6=relativ fuktighet, 21=vindby
+  const SMHI_BASE = 'https://opendata-download-metobs.smhi.se/api/version/latest';
+
+  const DIRS = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSV','SV','VSV','V','VNV','NV','NNV','N'];
+  function degToDir(d) { return DIRS[Math.round(d/22.5)]; }
+
+  function windDesc(ms) {
+    if (ms < 0.5) return '🌬 Stilla';
+    if (ms < 3.4) return '🌬 Lätt bris';
+    if (ms < 7.9) return '💨 Måttlig vind';
+    if (ms < 13.8) return '💨 Frisk vind';
+    if (ms < 20.7) return '🌀 Hård vind';
+    return '🌪 Storm';
+  }
+
+  async function smhiParam(stationId, paramId) {
+    try {
+      const url = `${SMHI_BASE}/parameter/${paramId}/station/${stationId}/period/latest-hour/data.json`;
+      const r = await fetch(url);
+      if (!r.ok) return null;
+      const j = await r.json();
+      const vals = j.value;
+      if (!vals || vals.length === 0) return null;
+      return parseFloat(vals[vals.length - 1].value);
+    } catch { return null; }
+  }
+
+  async function loadStation(stationId, prefix) {
+    const [temp, wind, dir, pres, hum, gust] = await Promise.all([
+      smhiParam(stationId, 1),
+      smhiParam(stationId, 4),
+      smhiParam(stationId, 5),
+      smhiParam(stationId, 9),
+      smhiParam(stationId, 6),
+      smhiParam(stationId, 21),
+    ]);
+
+    const fmt = (v, unit) => v !== null ? `${v}${unit}` : '–';
+    const windStr = wind !== null && dir !== null
+      ? `${wind} m/s ${degToDir(dir)}`
+      : fmt(wind, ' m/s');
+
+    document.getElementById(`${prefix}-temp`).textContent = temp !== null ? `${temp}°C` : '–°C';
+    document.getElementById(`${prefix}-desc`).textContent = wind !== null ? windDesc(wind) : 'Ingen data';
+    document.getElementById(`${prefix}-wind`).textContent = windStr;
+    document.getElementById(`${prefix}-pres`).textContent = fmt(pres, ' hPa');
+    document.getElementById(`${prefix}-hum`).textContent = fmt(hum, '%');
+    document.getElementById(`${prefix}-gust`).textContent = fmt(gust, ' m/s');
+  }
+
+  async function loadWeather() {
+    await Promise.all([
+      loadStation(72420, 'r'),  // Ringenäs
+      loadStation(72340, 't'),  // Tylösand
+    ]);
+    const now = new Date();
+    const ts = now.toLocaleString('sv-SE', {weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
+    document.getElementById('w-timestamp').textContent = `Live SMHI-data · ${ts}`;
+  }
+
+  loadWeather();
+  setInterval(loadWeather, 10 * 60 * 1000); // uppdatera var 10:e minut
 
   function ap(){const t=prompt('Projektnamn:');if(!t)return;const d=prompt('Beskrivning:')||'';const el=document.createElement('div');el.className='pjc';el.innerHTML=`<div class="pjh"><span class="pjt">💡 ${t}</span><span class="pb sp">Nytt</span></div><p class="pjd">${d}</p><div class="pbar"><div class="pfill" style="width:0%"></div></div>`;document.getElementById('pg').appendChild(el);}
 </script>
