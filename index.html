@@ -7,146 +7,81 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --pine:    #2d4a2d;
-      --moss:    #4a6741;
-      --fern:    #7a9e6a;
-      --sand:    #e8d5a3;
-      --beach:   #f2e4c0;
-      --sea:     #3d7a94;
-      --horizon: #5a9eb8;
-      --foam:    #c8e4ee;
-      --sun:     #f0b040;
-      --dusk:    #d4845a;
-      --bark:    #6b5040;
-      --cream:   #faf7f0;
-      --dark:    #1e2a1e;
+      --pine:#2d4a2d; --moss:#4a6741; --fern:#7a9e6a;
+      --sand:#e8d5a3; --beach:#f2e4c0; --sea:#3d7a94; --horizon:#5a9eb8;
+      --foam:#c8e4ee; --sun:#f0b040; --dusk:#d4845a; --bark:#6b5040;
+      --cream:#faf7f0; --dark:#1e2a1e;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--dark); overflow-x:hidden; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden;}
 
     /* NAV */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:0.6rem 2rem;
-      background:rgba(250,247,240,0.94);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid rgba(45,74,45,0.12);
-    }
-    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; color:var(--pine); letter-spacing:0.04em; }
-    .nav-links { display:flex; gap:1.5rem; list-style:none; }
-    .nav-links a { text-decoration:none; color:var(--bark); font-size:0.72rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; transition:color 0.2s; }
-    .nav-links a:hover { color:var(--pine); }
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0.6rem 2rem;background:rgba(250,247,240,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(45,74,45,0.12);}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--pine);letter-spacing:0.04em;}
+    .nav-links{display:flex;gap:1.5rem;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--bark);font-size:0.72rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--pine);}
 
     /* HERO */
-    .hero { min-height:100vh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-    .hero-sky {
-      position:absolute; inset:0;
-      background:linear-gradient(180deg, #7ab8d4 0%, #a8d4e8 25%, #c8e8f4 42%, #ddeef5 52%, #e8d5a3 68%, #c8b882 78%, #2d4a2d 78%, #1a321a 100%);
-    }
-    .hero-sun {
-      position:absolute; top:13%; left:50%; transform:translateX(-50%);
-      width:140px; height:140px; border-radius:50%;
-      background:radial-gradient(circle, #fffbe0 15%, #f8d050 50%, #eda030 80%, #e07020 100%);
-      box-shadow: 0 0 0 18px rgba(248,208,80,0.09), 0 0 0 45px rgba(248,208,80,0.06), 0 0 90px 35px rgba(240,176,48,0.38), 0 0 220px 90px rgba(240,150,30,0.16);
-      animation:sun-pulse 5s ease-in-out infinite;
-    }
-    @keyframes sun-pulse {
-      0%,100% { box-shadow:0 0 0 18px rgba(248,208,80,0.09),0 0 0 45px rgba(248,208,80,0.06),0 0 90px 35px rgba(240,176,48,0.38),0 0 220px 90px rgba(240,150,30,0.16); }
-      50%      { box-shadow:0 0 0 26px rgba(248,208,80,0.12),0 0 0 65px rgba(248,208,80,0.08),0 0 130px 55px rgba(240,176,48,0.44),0 0 280px 110px rgba(240,150,30,0.2); }
-    }
-    .hero-rays {
-      position:absolute; top:0; left:50%;
-      width:600px; height:600px;
-      margin-left:-300px; margin-top:-80px;
-      pointer-events:none;
-      animation:rays-spin 45s linear infinite;
-    }
-    @keyframes rays-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-    .hero-rays::before {
-      content:''; position:absolute; inset:0;
-      background:repeating-conic-gradient(rgba(248,208,80,0.05) 0deg 10deg, transparent 10deg 20deg);
-      border-radius:50%;
-    }
-    .hero-water {
-      position:absolute; bottom:14%; left:0; right:0; height:28%;
-      background:linear-gradient(180deg, rgba(58,120,148,0) 0%, rgba(58,120,148,0.18) 40%, rgba(40,90,115,0.42) 100%);
-    }
-    .hero-beach-strip {
-      position:absolute; bottom:11.5%; left:0; right:0; height:5%;
-      background:linear-gradient(180deg, rgba(232,213,163,0) 0%, rgba(210,188,130,0.65) 100%);
-    }
-    .hero-forest {
-      position:absolute; bottom:0; left:0; right:0; height:18%;
-    }
-    .hero-waves { position:absolute; bottom:11.5%; left:0; right:0; height:70px; pointer-events:none; }
-    .hero-waves svg { position:absolute; bottom:0; width:100%; }
-    .wa { animation:wd 7s ease-in-out infinite; }
-    .wb { animation:wd 10s ease-in-out infinite reverse; opacity:0.65; }
-    .wc { animation:wd 13s ease-in-out infinite; opacity:0.45; }
-    @keyframes wd { 0%,100%{transform:translateX(0) scaleY(1)} 50%{transform:translateX(-2%) scaleY(1.1)} }
-    .bird { position:absolute; font-size:2.2rem; opacity:0.55; animation:bfly 24s linear infinite; }
+    .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .hero-sky{position:absolute;inset:0;background:linear-gradient(180deg,#7ab8d4 0%,#a8d4e8 25%,#c8e8f4 42%,#ddeef5 52%,#e8d5a3 68%,#c8b882 78%,#2d4a2d 78%,#1a321a 100%);}
+    .hero-sun{position:absolute;top:13%;left:50%;transform:translateX(-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#fffbe0 15%,#f8d050 50%,#eda030 80%,#e07020 100%);box-shadow:0 0 0 18px rgba(248,208,80,0.09),0 0 0 45px rgba(248,208,80,0.06),0 0 90px 35px rgba(240,176,48,0.38),0 0 220px 90px rgba(240,150,30,0.16);animation:sun-pulse 5s ease-in-out infinite;}
+    @keyframes sun-pulse{0%,100%{box-shadow:0 0 0 18px rgba(248,208,80,0.09),0 0 0 45px rgba(248,208,80,0.06),0 0 90px 35px rgba(240,176,48,0.38),0 0 220px 90px rgba(240,150,30,0.16);}50%{box-shadow:0 0 0 26px rgba(248,208,80,0.12),0 0 0 65px rgba(248,208,80,0.08),0 0 130px 55px rgba(240,176,48,0.44),0 0 280px 110px rgba(240,150,30,0.2);}}
+    .hero-rays{position:absolute;top:0;left:50%;width:600px;height:600px;margin-left:-300px;margin-top:-80px;pointer-events:none;animation:rays-spin 45s linear infinite;}
+    @keyframes rays-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .hero-rays::before{content:'';position:absolute;inset:0;background:repeating-conic-gradient(rgba(248,208,80,0.05) 0deg 10deg,transparent 10deg 20deg);border-radius:50%;}
+    .hero-forest{position:absolute;bottom:0;left:0;right:0;height:18%;}
+    .hero-waves{position:absolute;bottom:11.5%;left:0;right:0;height:70px;pointer-events:none;}
+    .hero-waves svg{position:absolute;bottom:0;width:100%;}
+    .wa{animation:wd 7s ease-in-out infinite;}
+    .wb{animation:wd 10s ease-in-out infinite reverse;opacity:0.65;}
+    .wc{animation:wd 13s ease-in-out infinite;opacity:0.45;}
+    @keyframes wd{0%,100%{transform:translateX(0) scaleY(1)}50%{transform:translateX(-2%) scaleY(1.1)}}
+    .bird{position:absolute;font-size:2.2rem;opacity:0.55;animation:bfly 24s linear infinite;}
     .bird:nth-child(1){top:21%;}
     .bird:nth-child(2){top:27%;animation-duration:32s;animation-delay:-11s;font-size:1.6rem;opacity:0.38;}
     .bird:nth-child(3){top:17%;animation-duration:28s;animation-delay:-19s;font-size:1.3rem;opacity:0.3;}
     @keyframes bfly{from{transform:translateX(-4vw)}to{transform:translateX(104vw)}}
-    .hero-content { position:relative; z-index:10; text-align:center; padding:2rem; }
-    .hero-eyebrow { font-size:0.7rem; letter-spacing:0.38em; text-transform:uppercase; color:rgba(255,255,255,0.72); margin-bottom:1.2rem; font-weight:500; }
-    .hero-title {
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(5.5rem,17vw,13rem);
-      font-weight:300; line-height:0.88; color:white;
-      text-shadow:0 4px 50px rgba(0,0,0,0.28), 0 0 100px rgba(248,208,80,0.18);
-      margin-bottom:1rem; letter-spacing:0.02em;
-    }
-    .hero-title em { font-style:italic; color:#fff8c0; }
-    .hero-sub {
-      font-family:'Cormorant Garamond',serif; font-style:italic;
-      font-size:1.45rem; font-weight:300;
-      color:rgba(255,255,255,0.82); margin-bottom:2.5rem;
-      text-shadow:0 2px 24px rgba(0,0,0,0.3);
-    }
-    .hero-badge {
-      display:inline-flex; align-items:center; gap:0.5rem;
-      background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.32);
-      border-radius:2px; padding:0.5rem 1.2rem;
-      font-size:0.8rem; letter-spacing:0.07em; color:rgba(255,255,255,0.88);
-      backdrop-filter:blur(8px);
-    }
-    .hero-scroll {
-      position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
-      z-index:10; display:flex; flex-direction:column; align-items:center; gap:0.3rem;
-      color:rgba(255,255,255,0.45); font-size:0.62rem; letter-spacing:0.22em; text-transform:uppercase;
-      animation:sb 2.2s ease-in-out infinite;
-    }
+    .hero-content{position:relative;z-index:10;text-align:center;padding:2rem;}
+    .hero-eyebrow{font-size:0.7rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-bottom:1.2rem;font-weight:500;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(5.5rem,17vw,13rem);font-weight:300;line-height:0.88;color:white;text-shadow:0 4px 50px rgba(0,0,0,0.28),0 0 100px rgba(248,208,80,0.18);margin-bottom:1rem;letter-spacing:0.02em;}
+    .hero-title em{font-style:italic;color:#fff8c0;}
+    .hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.45rem;font-weight:300;color:rgba(255,255,255,0.82);margin-bottom:2.5rem;text-shadow:0 2px 24px rgba(0,0,0,0.3);}
+    .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.32);border-radius:2px;padding:0.5rem 1.2rem;font-size:0.8rem;letter-spacing:0.07em;color:rgba(255,255,255,0.88);backdrop-filter:blur(8px);}
+    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:0.3rem;color:rgba(255,255,255,0.45);font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;animation:sb 2.2s ease-in-out infinite;}
     @keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
-    /* SECTIONS */
-    .sw { max-width:1040px; margin:0 auto; padding:3.5rem 2rem; }
-    .sh { text-align:center; margin-bottom:2.2rem; }
-    .sh h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(1.7rem,4vw,2.6rem); color:var(--pine); margin-bottom:0.3rem; font-weight:400; }
-    .sh p { color:var(--bark); font-style:italic; font-size:0.92rem; }
-    .div { width:44px; height:2px; margin:0.6rem auto; background:linear-gradient(90deg,var(--sea),var(--fern)); border-radius:2px; }
+    /* SHARED */
+    .sw{max-width:1040px;margin:0 auto;padding:3.5rem 2rem;}
+    .sh{text-align:center;margin-bottom:2.2rem;}
+    .sh h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.6rem);color:var(--pine);margin-bottom:0.3rem;font-weight:400;}
+    .sh p{color:var(--bark);font-style:italic;font-size:0.92rem;}
+    .div{width:44px;height:2px;margin:0.6rem auto;background:linear-gradient(90deg,var(--sea),var(--fern));border-radius:2px;}
 
-    /* OM */
-    .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0.9rem; }
-    .ic {
-      background:white; border-radius:3px; padding:1.3rem;
-      border:1px solid rgba(45,74,45,0.1); border-top:3px solid var(--fern);
-      transition:transform 0.22s,box-shadow 0.22s;
-    }
-    .ic:nth-child(2){border-top-color:var(--sea);}
-    .ic:nth-child(3){border-top-color:var(--sun);}
-    .ic:nth-child(4){border-top-color:var(--dusk);}
-    .ic:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(45,74,45,0.1);}
-    .ic-icon{font-size:1.5rem;margin-bottom:0.6rem;}
-    .ic h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--pine);margin-bottom:0.5rem;font-weight:600;}
-    .ic p,.ic li{font-size:0.85rem;color:#5a5040;line-height:1.65;}
-    .ic ul{padding-left:1rem;}
+    /* HISTORIA */
+    .hist-bg{background:linear-gradient(160deg,#f5f0e8,#ede4d0);}
+    .hist-body{max-width:780px;margin:0 auto;}
+    .hist-body p{font-size:0.97rem;line-height:1.85;color:#4a3828;margin-bottom:1.2rem;}
+    .hist-body a{color:var(--sea);text-decoration:none;border-bottom:1px solid rgba(61,122,148,0.3);}
+    .hist-body a:hover{color:var(--pine);}
+    .hist-timeline{margin:2rem 0;border-left:2px solid var(--fern);padding-left:1.5rem;}
+    .ht-row{margin-bottom:1rem;position:relative;}
+    .ht-row::before{content:'';position:absolute;left:-1.63rem;top:0.35rem;width:9px;height:9px;border-radius:50%;background:var(--fern);border:2px solid var(--cream);}
+    .ht-year{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--pine);}
+    .ht-text{font-size:0.88rem;color:#5a4a38;line-height:1.6;}
+
+    /* ÄGARE */
+    .agare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.8rem;max-width:680px;margin:0 auto;}
+    .ag{background:white;border:1px solid rgba(45,74,45,0.1);border-top:3px solid var(--fern);padding:1.1rem;text-align:center;transition:transform 0.2s,box-shadow 0.2s;}
+    .ag:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(45,74,45,0.1);}
+    .ag-icon{font-size:1.6rem;margin-bottom:0.4rem;}
+    .ag-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--pine);}
+    .ag-name a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(45,74,45,0.25);}
+    .ag-name a:hover{color:var(--sea);}
 
     /* SCHEMA */
-    .schema-bg { background:linear-gradient(135deg,#e5f0e5,#d2e8da,#c5dfe8); padding:3rem 2rem; }
+    .schema-bg{background:linear-gradient(135deg,#e5f0e5,#d2e8da,#c5dfe8);padding:3rem 2rem;}
     .schema-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:680px;margin:0 auto;}
     .sc{background:white;border-radius:3px;padding:1.3rem 1rem;text-align:center;box-shadow:0 3px 14px rgba(0,0,0,0.07);position:relative;}
     .sc.active{border:2px solid var(--dusk);}
@@ -172,7 +107,7 @@
 
     /* VÄDER */
     .w-bg{background:linear-gradient(160deg,#1c3848 0%,#2a587a 50%,#183228 100%);padding:3rem 2rem;}
-    .w-bg .sh h2{color:white;} .w-bg .sh p{color:rgba(255,255,255,0.5);} .w-bg .div{background:linear-gradient(90deg,#a0d0e8,var(--dusk));}
+    .w-bg .sh h2{color:white;}.w-bg .sh p{color:rgba(255,255,255,0.5);}.w-bg .div{background:linear-gradient(90deg,#a0d0e8,var(--dusk));}
     .w-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:680px;margin:0 auto;}
     .wc{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.11);border-radius:3px;padding:1.3rem;backdrop-filter:blur(10px);}
     .ws{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#9ccce0;margin-bottom:0.6rem;}
@@ -201,30 +136,10 @@
     .gm img{max-width:92vw;max-height:92vh;object-fit:contain;}
     .gm-close{position:absolute;top:1.1rem;right:1.4rem;color:white;font-size:2rem;cursor:pointer;background:none;border:none;}
 
-    /* DAGBOK */
-
-
-    /* PROJEKT */
-    .pj-bg{background:linear-gradient(160deg,#e5f0e5,#d8eef5);padding:3rem 2rem;}
-    .pj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.9rem;max-width:920px;margin:0 auto 1.2rem;}
-    .pjc{background:white;border-radius:3px;padding:1.1rem;box-shadow:0 2px 10px rgba(0,0,0,0.05);position:relative;}
-    .pjc:hover .pj-del{opacity:1;}
-    .pj-del{position:absolute;top:0.6rem;right:0.6rem;background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;opacity:0;transition:opacity 0.2s,color 0.2s;line-height:1;padding:2px 5px;}
-    .pj-del:hover{color:#c05040;}
-    .pj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.9rem;max-width:920px;margin:0 auto 1.2rem;}
-    .pjh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;}
-    .pjt{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--pine);font-weight:600;}
-    .pb{font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:7px;}
-    .sp{background:#e5eef5;color:var(--sea);} .sg{background:#fff3e0;color:#c06018;} .sd{background:#e5f2e5;color:var(--moss);}
-    .pjd{font-size:0.8rem;color:#6a6058;line-height:1.55;margin-bottom:0.7rem;}
-    .pbar{height:3px;background:rgba(45,74,45,0.1);border-radius:2px;overflow:hidden;}
-    .pfill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sea),var(--fern));}
-    .add-b{display:block;margin:0 auto;background:var(--pine);color:white;border:none;padding:0.55rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:0.76rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border-radius:2px;cursor:pointer;transition:background 0.2s;}
-    .add-b:hover{background:var(--sea);}
-
     footer{background:var(--dark);color:rgba(255,255,255,0.42);text-align:center;padding:1.8rem 2rem;font-size:0.76rem;letter-spacing:0.07em;}
     footer strong{color:rgba(255,255,255,0.72);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;}
 
+    .georg-box.open{max-height:600px !important;}
     .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
     .reveal.visible{opacity:1;transform:none;}
 
@@ -233,6 +148,7 @@
       .maps-grid,.w-grid,.schema-grid{grid-template-columns:1fr;}
       .g-grid{grid-template-columns:repeat(2,1fr);}
       .gi.gb{grid-column:span 1;grid-row:span 1;}
+      .agare-grid{grid-template-columns:repeat(2,1fr);}
     }
   </style>
 </head>
@@ -241,12 +157,12 @@
 <nav>
   <div class="nav-logo">🌿 Lillarp</div>
   <ul class="nav-links">
-    <li><a href="#om">Om stugan</a></li>
+    <li><a href="#historia">Historia</a></li>
+    <li><a href="#agare">Ägare</a></li>
     <li><a href="#schema">Schema</a></li>
     <li><a href="#kartor">Kartor</a></li>
     <li><a href="#vader">Väder</a></li>
     <li><a href="#galleri">Galleri</a></li>
-    <li><a href="#projekt">Projekt</a></li>
   </ul>
 </nav>
 
@@ -255,8 +171,6 @@
   <div class="hero-sky"></div>
   <div class="hero-rays"></div>
   <div class="hero-sun"></div>
-  <div class="hero-water"></div>
-  <div class="hero-beach-strip"></div>
 
   <div class="hero-forest">
     <svg viewBox="0 0 1440 200" preserveAspectRatio="none" style="width:100%;height:100%;display:block;">
@@ -278,21 +192,105 @@
   <div class="hero-content">
     <p class="hero-eyebrow">Halmstad &nbsp;·&nbsp; Halland &nbsp;·&nbsp; Sverige</p>
     <h1 class="hero-title"><em>Lillarp</em></h1>
-    <p class="hero-sub">Vår gemensamma sommarstuga sedan generationer</p>
+    <p class="hero-sub">En plats med historia och själ – sedan 1948</p>
     <div class="hero-badge">📍 56°41'18"N &nbsp;12°44'13"E</div>
   </div>
   <div class="hero-scroll"><span>↓</span>utforska</div>
 </div>
 
-<!-- OM -->
-<div id="om" style="background:var(--cream);">
+<!-- HISTORIA -->
+<div id="historia" class="hist-bg">
   <div class="sw">
-    <div class="sh reveal"><h2>Om Lillarp</h2><div class="div"></div><p>Tre familjer – ett hem i skogen nära havet</p></div>
-    <div class="info-grid reveal">
-      <div class="ic"><div class="ic-icon">🏡</div><h3>Stugan</h3><p>Lillarp ligger i skogen nära Halmstads kust. En plats för stillhet, gemenskap och sommarminnens skapande – nära både skog och hav.</p></div>
-      <div class="ic"><div class="ic-icon">👨‍👩‍👧</div><h3>Tre familjer</h3><p>Stugan ägs gemensamt. Utanför schemalagd tid är det fritt att boka – kontakta de övriga ägarna och stäm av att det passar.</p></div>
-      <div class="ic"><div class="ic-icon">🌊</div><h3>Läget</h3><ul><li>Nära Ringenäs &amp; Tylösand</li><li>Skog och natur inpå knuten</li><li>Lugnt och avskilt</li><li>Perfekt sommaridyll</li></ul></div>
-      <div class="ic"><div class="ic-icon">📋</div><h3>Regler</h3><ul><li>Lämna stugan i gott skick</li><li>Meddela vid bokning utanför schema</li><li>Dela på underhållskostnader</li><li>Respektera varandras tid</li></ul></div>
+    <div class="sh reveal">
+      <h2>Historien om Lillarp</h2>
+      <div class="div"></div>
+      <p>Från bussbolagsägarens vision till Björck-familjens hem</p>
+    </div>
+    <div class="hist-body reveal">
+      <p>
+        Lillarp byggdes strax efter andra världskriget och stod färdigt <strong>1948</strong>. Bakom huset stod George — Georg Larsson (1891–1970) — en pionjär inom kollektivtrafiken och ägare till ett av Nackaområdets mest betydande bussbolag.
+      </p>
+
+      <!-- GEORG LARSSON EXPANDERBAR -->
+      <div style="margin-bottom:1.5rem;">
+        <button onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.arr').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'"
+          style="width:100%;text-align:left;background:rgba(45,74,45,0.06);border:1px solid rgba(45,74,45,0.15);padding:0.75rem 1rem;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--pine);display:flex;justify-content:space-between;align-items:center;">
+          <span>🚌 Georg Larsson och Björknäsbolaget — en pionjärs historia</span>
+          <span class="arr" style="font-size:0.75rem;color:var(--fern);">▼</span>
+        </button>
+        <div style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;border:1px solid rgba(45,74,45,0.1);border-top:none;" class="georg-box">
+          <div style="padding:1.2rem 1.2rem 0.2rem;background:rgba(45,74,45,0.03);">
+            <p>Georg Larsson (1891–1970) var en av pionjärerna bakom den tidiga busstrafiken i Nackaområdet. Tillsammans med Karl Gustav Blom startade han år 1920 reguljär busstrafik mellan Björknäs, Ektorp och Stockholm. Den första bussen hade plats för endast 18 passagerare, men verksamheten växte snabbt i takt med att behovet av transporter till huvudstaden ökade.</p>
+            <p>Vid denna tid var Nacka fortfarande till stor del landsbygd med gårdar, skog och mindre samhällen. Vägarna var smala grusvägar och trafiken kunde vara svår under vinterhalvåret. Trots detta blev busslinjen en viktig förbindelse för människor som arbetade eller handlade i Stockholm.</p>
+            <p>År 1925 köptes Björknäs gård av företaget som senare blev känt som Stockholm–Björknäs Trafikbolag, ofta kallat <em>Björknäsbolaget</em>. Jordbruket lades ned och gårdens byggnader byggdes om för den nya verksamheten. Ladugården blev garage för bussarna och stallet omvandlades till verkstad.</p>
+            <p>Flygfotot från 1937 visar denna omvandling tydligt. Mitt bland odlingslotter och villabebyggelse syns anläggningen där bussarna stod uppställda och servades — en bild från en tid då Nacka befann sig mellan två världar, den gamla landsbygden och den framväxande förorten.</p>
+            <p>Georg Larsson var inte bara företagare utan också en praktisk entreprenör i en tid då kollektivtrafiken fortfarande var i sin linda. Än idag går flera vägar genom Björknäs ungefär där de gick på 1930-talet, och spåren efter pionjärerna lever kvar som en del av Nackas lokalhistoria.</p>
+            <p style="font-size:0.72rem;color:var(--bark);margin-top:0.5rem;">
+              Källor: <a href="https://www.facebook.com/groups/44427853430/posts/10162507179533431/" target="_blank">Facebook/Nacka lokalhistoria</a> &nbsp;·&nbsp;
+              <a href="https://digitaltmuseum.se/0210113655130/bussgarage-bjorknas-01" target="_blank">Digitalt Museum – Björknäs bussgarage</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hist-timeline">
+        <div class="ht-row">
+          <div class="ht-year">1948</div>
+          <div class="ht-text">Lillarp färdigställs. George, bussbolagsägaren, låter uppföra huset. Det ser idag i stort sett likadant ut som när det byggdes.</div>
+        </div>
+        <div class="ht-row">
+          <div class="ht-year">1950-talet</div>
+          <div class="ht-text">Stora Boken planteras på gräsmattan framför huset. Den har sedan dess vuxit sig ståtlig och är idag en naturlig samlingspunkt och ett vackert blickfång.</div>
+        </div>
+        <div class="ht-row">
+          <div class="ht-year">1964</div>
+          <div class="ht-text"><a href="https://sv.wikipedia.org/wiki/Hugo_Bj%C3%B6rck" target="_blank">Hugo Björck</a> köper Lillarp. Huset blir ett älskat sommarhus – en fristad där generationer samlats för att njuta av lugnet, naturen och varandra.</div>
+        </div>
+        <div class="ht-row">
+          <div class="ht-year">Idag</div>
+          <div class="ht-text">Lillarp förvaltas vidare av Hugos barn och barnbarn. Huset bär samma charm och karaktär som 1948 – tidlöst och levande.</div>
+        </div>
+      </div>
+
+      <p>
+        Hugos tre barn – <a href="https://sv.wikipedia.org/wiki/%C3%85ke_Bj%C3%B6rck" target="_blank">Åke</a>, <a href="https://sv.wikipedia.org/wiki/Anne-Marie_Bj%C3%B6rck" target="_blank">Anne-Marie</a> och <a href="https://sv.wikipedia.org/wiki/Lennart_Bj%C3%B6rck" target="_blank">Lennart</a> – har tagit emot arvet och förvaltar platsen med samma kärlek och respekt som tidigare generationer.
+      </p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--pine);border-left:3px solid var(--fern);padding-left:1rem;margin-top:1.5rem;">
+        Lillarp är mer än bara ett hus. Det är en plats där tid möter tidlöshet, där minnen skapas och där historien fortfarande känns levande.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ÄGARE -->
+<div id="agare" style="background:var(--cream);">
+  <div class="sw">
+    <div class="sh reveal">
+      <h2>Nuvarande ägare</h2>
+      <div class="div"></div>
+      <p>Fem personer delar på tre perioder under sommaren</p>
+    </div>
+    <div class="agare-grid reveal">
+      <div class="ag">
+        <div class="ag-icon">🌿</div>
+        <div class="ag-name"><a href="https://sv.wikipedia.org/wiki/%C3%85ke_Bj%C3%B6rck" target="_blank">Åke Björck</a></div>
+      </div>
+      <div class="ag">
+        <div class="ag-icon">🌿</div>
+        <div class="ag-name">Eva Björck</div>
+      </div>
+      <div class="ag">
+        <div class="ag-icon">🌿</div>
+        <div class="ag-name">Lars Malmqvist</div>
+      </div>
+      <div class="ag">
+        <div class="ag-icon">🌿</div>
+        <div class="ag-name">Eva Malmqvist</div>
+      </div>
+      <div class="ag">
+        <div class="ag-icon">🌿</div>
+        <div class="ag-name">Gunilla Malmqvist</div>
+      </div>
     </div>
   </div>
 </div>
@@ -301,9 +299,9 @@
 <div class="schema-bg" id="schema">
   <div class="sh reveal"><h2>Sommarschemat</h2><div class="div"></div><p>Rullande schema – roterar ett steg varje år</p></div>
   <div class="schema-grid reveal">
-    <div class="sc"><div class="sc-month">Juni</div><div class="sc-fam">Familj 1</div><div class="sc-dates">1 juni – 30 juni</div></div>
-    <div class="sc active"><div class="sc-month">Juli</div><div class="sc-fam">Familj 2</div><div class="sc-dates">1 juli – 31 juli</div></div>
-    <div class="sc"><div class="sc-month">Augusti</div><div class="sc-fam">Familj 3</div><div class="sc-dates">1 aug – 31 aug</div></div>
+    <div class="sc"><div class="sc-month">Juni</div><div class="sc-fam">Del 1</div><div class="sc-dates">1 juni – 30 juni</div></div>
+    <div class="sc active"><div class="sc-month">Juli</div><div class="sc-fam">Del 2</div><div class="sc-dates">1 juli – 31 juli</div></div>
+    <div class="sc"><div class="sc-month">Augusti</div><div class="sc-fam">Del 3</div><div class="sc-dates">1 aug – 31 aug</div></div>
   </div>
   <p style="text-align:center;color:#6a9a7a;font-size:0.78rem;margin-top:1rem;font-style:italic;">Utanför din period? Kontakta de andra ägarna för att stämma av.</p>
 </div>
@@ -313,51 +311,36 @@
   <div class="sw">
     <div class="sh reveal"><h2>Kartor</h2><div class="div"></div><p>Läge och tomtgränser för Lillarp</p></div>
     <div class="maps-grid reveal">
-
       <div class="mt">
         <div class="mt-head"><span>🗺</span><h3>Google Maps</h3></div>
         <a class="mt-vis" href="https://www.google.com/maps/place/56%C2%B041'18.1%22N+12%C2%B044'13.1%22E" target="_blank">
           <div class="mt-icon">📍</div>
-          <div class="mt-info">
-            <strong>Lillarp – Halmstad 442</strong>
-            <small>56°41'18.1"N &nbsp;12°44'13.1"E</small>
-          </div>
+          <div class="mt-info"><strong>Lillarp – Halmstad 442</strong><small>56°41'18.1"N &nbsp;12°44'13.1"E</small></div>
         </a>
-        <div class="mt-coords">
-          <span>WGS84: 56.688361, 12.737528</span>
-          <span>SWEREF: N 6284984 E 361393</span>
-        </div>
+        <div class="mt-coords"><span>WGS84: 56.688361, 12.737528</span><span>SWEREF: N 6284984 E 361393</span></div>
         <div class="mt-links">
           <a class="mb" href="https://www.google.com/maps/place/56%C2%B041'18.1%22N+12%C2%B044'13.1%22E" target="_blank">🗺 Visa karta</a>
           <a class="mb" href="https://www.google.com/maps/dir/?api=1&destination=56.688361,12.737528" target="_blank">🧭 Vägbeskrivning</a>
           <a class="mb" href="https://maps.apple.com/?ll=56.688361,12.737528&q=Lillarp" target="_blank">🍎 Apple Maps</a>
         </div>
       </div>
-
       <div class="mt">
         <div class="mt-head"><span>📐</span><h3>Lantmäteriet – Tomtgränser</h3></div>
         <a class="mt-vis" href="https://minkarta.lantmateriet.se/?e=361393&n=6284984&z=16&background=topowebb&layers=fastighetsindelning" target="_blank">
           <div class="mt-icon">🏡</div>
-          <div class="mt-info">
-            <strong>Fastighet &amp; tomtgränser</strong>
-            <small>SWEREF 99 TM: N 6284984, E 361393</small>
-          </div>
+          <div class="mt-info"><strong>Fastighet &amp; tomtgränser</strong><small>SWEREF 99 TM: N 6284984, E 361393</small></div>
         </a>
-        <div class="mt-coords">
-          <span>Min Karta med fastighetsindelning aktiverad</span>
-        </div>
+        <div class="mt-coords"><span>Min Karta med fastighetsindelning aktiverad</span></div>
         <div class="mt-links">
           <a class="mb" href="https://minkarta.lantmateriet.se/?e=361393&n=6284984&z=16&background=topowebb&layers=fastighetsindelning" target="_blank">📍 Tomtgränser</a>
           <a class="mb" href="https://minkarta.lantmateriet.se/?e=361393&n=6284984&z=14&background=orto&layers=fastighetsindelning" target="_blank">🛰 Satellitvy</a>
-          <a class="mb" href="https://kartor.lantmateriet.se/" target="_blank">🗂 Fler kartor</a>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- VÄDER -->
+<!-- VÄDER — SMHI SNOW1gv1 API -->
 <div class="w-bg" id="vader">
   <div class="sh reveal"><h2>Vädret vid kusten</h2><div class="div"></div><p id="w-timestamp">Hämtar live data från SMHI…</p></div>
   <div class="w-grid reveal">
@@ -385,12 +368,6 @@
     </div>
   </div>
   <div class="w-foot" style="margin-top:1.2rem;">
-    <a href="https://martinbjk.github.io/RingnasTylesand/" target="_blank"
-       style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:2px;padding:0.45rem 1.1rem;color:white;text-decoration:none;font-size:0.8rem;font-weight:600;letter-spacing:0.08em;transition:background 0.2s;"
-       onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-      🌊 Öppna Vågagenten – fullständig våginfo
-    </a>
-    &nbsp;·&nbsp;
     <a href="https://www.smhi.se/vader/observationer/sjovader" target="_blank" style="color:#9ccce0;font-size:0.75rem;">SMHI sjöväder →</a>
   </div>
 </div>
@@ -400,240 +377,105 @@
   <div class="sh reveal"><h2>Bildgalleri</h2><div class="div"></div><p>Minnen från Lillarp</p></div>
   <div class="g-grid reveal" id="gg">
     <div class="gi gb" onclick="om(this)"><div class="gp"><span>🏡</span><p>Stugan<br><small>Lägg till foto</small></p></div></div>
+    <div class="gi" onclick="om(this)"><div class="gp"><span>🌳</span><p>Stora Boken</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🌅</span><p>Solnedgång</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🌊</span><p>Havet</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🌲</span><p>Skogen</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🍓</span><p>Sommarmat</p></div></div>
-    <div class="gi" onclick="om(this)"><div class="gp"><span>🎣</span><p>Fiske</p></div></div>
   </div>
   <input type="file" id="fIn" accept="image/*" multiple style="display:none" onchange="hu(event)">
   <button class="g-btn" onclick="document.getElementById('fIn').click()">+ Lägg till foton</button>
 </div>
 <div class="gm" id="gm"><button class="gm-close" onclick="cm()">✕</button><img id="gmi" src="" alt=""></div>
 
-
-<!-- PROJEKT -->
-<div class="pj-bg" id="projekt">
-  <div class="sh reveal"><h2>Projekt &amp; Planering</h2><div class="div"></div><p>Förbättringar, renoveringar och drömmar</p></div>
-  <div class="pj-grid reveal" id="pg"></div>
-  <button class="add-b" onclick="ap()">+ Nytt projekt</button>
-</div>
-
 <footer>
   <p><strong>Lillarp</strong> &nbsp;·&nbsp; 56°41'18"N &nbsp;12°44'13"E &nbsp;·&nbsp; Halmstad 442, 305 91 Halmstad</p>
-  <p style="margin-top:0.35rem;">🌿 En plats att längta till – varje sommar</p>
+  <p style="margin-top:0.35rem;">🌿 En plats att längta till – varje sommar · Byggt 1948</p>
 </footer>
 
 <script>
+  // Scroll reveal
   const obs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
   document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
+  // Galleri
   function hu(e){const g=document.getElementById('gg');Array.from(e.target.files).forEach(f=>{const u=URL.createObjectURL(f);const el=document.createElement('div');el.className='gi';el.innerHTML=`<img src="${u}" alt="${f.name}">`;el.onclick=()=>{document.getElementById('gmi').src=u;document.getElementById('gm').classList.add('open');};g.insertBefore(el,g.lastElementChild);});}
   function om(el){const i=el.querySelector('img');if(!i)return;document.getElementById('gmi').src=i.src;document.getElementById('gm').classList.add('open');}
   function cm(){document.getElementById('gm').classList.remove('open');}
   document.getElementById('gm').addEventListener('click',function(e){if(e.target===this)cm();});
 
-
-  // ── LIVE SMHI VÄDER
-  // Ringenäs: 56.6942, 12.6947  |  Tylösand: 56.6578, 12.7378
-  const PMP = 'https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point';
-
+  // ── SMHI SNOW1gv1 (ersatte PMP3gv2 den 31 mars 2026) ──
+  const SNOW1G = 'https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point';
   const WDIRS = ['N','NNO','NO','ONO','O','OSO','SO','SSO','S','SSV','SV','VSV','V','VNV','NV','NNV','N'];
-  function degDir(d) { return WDIRS[Math.round((d % 360) / 22.5)]; }
-  function beaufortDesc(ms) {
-    if (ms < 0.5) return '🌬 Stilla';
-    if (ms < 1.6) return '🍃 Nästan stilla';
-    if (ms < 3.4) return '🍃 Lätt bris';
-    if (ms < 5.5) return '💨 Svag bris';
-    if (ms < 8.0) return '💨 Måttlig bris';
-    if (ms < 10.8) return '💨 Frisk bris';
-    if (ms < 13.9) return '🌀 Hård bris';
-    if (ms < 17.2) return '🌀 Hård vind';
-    if (ms < 20.8) return '🌀 Mycket hård vind';
-    return '🌪 Storm';
+
+  function degDir(d){return WDIRS[Math.round(((d%360)+360)%360/22.5)%16];}
+
+  function beaufortDesc(ms){
+    if(ms<0.5)return'🌬 Stilla';if(ms<1.6)return'🍃 Nästan stilla';
+    if(ms<3.4)return'🍃 Lätt bris';if(ms<5.5)return'💨 Svag bris';
+    if(ms<8.0)return'💨 Måttlig bris';if(ms<10.8)return'💨 Frisk bris';
+    if(ms<13.9)return'🌀 Hård bris';if(ms<17.2)return'🌀 Hård vind';
+    if(ms<20.8)return'🌀 Mycket hård vind';return'🌪 Storm';
   }
 
-  function getParam(params, name) {
-    const p = params.find(x => x.name === name);
-    return p ? p.values[0] : null;
+  function weatherIcon(c){
+    if(!c)return'🌡';if(c===1)return'☀️';if(c===2)return'🌤';
+    if(c<=4)return'⛅';if(c<=6)return'☁️';if(c===7)return'🌫';
+    if(c<=10)return'🌦';if(c<=13)return'⛈';if(c<=16)return'🌩';
+    if(c<=19)return'🌨';if(c<=22)return'❄️';if(c<=25)return'🌧';return'🌡';
   }
 
-  async function fetchSMHI(lat, lon) {
-    const url = `${PMP}/lon/${lon}/lat/${lat}/data.json`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('SMHI fel');
+  async function fetchSMHI(lat, lon){
+    const r = await fetch(`${SNOW1G}/lon/${lon}/lat/${lat}/data.json`);
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
     const j = await r.json();
-    // Hitta närmast aktuellt tidssteg
+    // SNOW1g: tidnyckel = "time", data = flat objekt med entry.data.X
     const now = Date.now();
     let best = j.timeSeries[0];
-    for (const ts of j.timeSeries) {
-      const t = new Date(ts.validTime).getTime();
-      if (t <= now) best = ts;
+    for(const ts of j.timeSeries){
+      if(new Date(ts.time).getTime() <= now) best = ts;
       else break;
     }
-    const p = best.parameters;
+    const d = best.data;
     return {
-      temp:  getParam(p, 't'),
-      wind:  getParam(p, 'ws'),
-      wdir:  getParam(p, 'wd'),
-      pres:  getParam(p, 'msl'),
-      hum:   getParam(p, 'r'),
-      gust:  getParam(p, 'gust'),
-      wsymb: getParam(p, 'Wsymb2'),
+      temp:  d.air_temperature   ?? null,
+      wind:  d.wind_speed        ?? null,
+      wdir:  d.wind_direction    ?? null,
+      pres:  d.air_pressure      ?? null,
+      hum:   d.relative_humidity ?? null,
+      gust:  d.wind_gust_speed   ?? null,
+      wsymb: d.weather_symbol    ?? null,
     };
   }
 
-  function wsymbIcon(n) {
-    if (!n) return '🌡';
-    if (n === 1) return '☀️';
-    if (n === 2) return '🌤';
-    if (n <= 4) return '⛅';
-    if (n <= 6) return '☁️';
-    if (n === 7) return '🌫';
-    if (n <= 10) return '🌦';
-    if (n <= 13) return '⛈';
-    if (n <= 16) return '🌩';
-    if (n <= 19) return '🌨';
-    if (n <= 22) return '❄️';
-    if (n <= 25) return '🌧';
-    if (n <= 27) return '🌨';
-    return '🌡';
+  function renderStation(pfx, d){
+    const fmt=(v,u)=>v!=null?`${Math.round(v*10)/10}${u}`:'–';
+    document.getElementById(`${pfx}-temp`).textContent = d.temp!=null?`${Math.round(d.temp*10)/10}°C`:'–°C';
+    document.getElementById(`${pfx}-desc`).textContent = `${weatherIcon(d.wsymb)} ${d.wind!=null?beaufortDesc(d.wind):'–'}`;
+    document.getElementById(`${pfx}-wind`).textContent = d.wind!=null?`${Math.round(d.wind*10)/10} m/s ${d.wdir!=null?degDir(d.wdir):''}`:' –';
+    document.getElementById(`${pfx}-pres`).textContent = fmt(d.pres,' hPa');
+    document.getElementById(`${pfx}-hum`).textContent  = fmt(d.hum,'%');
+    document.getElementById(`${pfx}-gust`).textContent = fmt(d.gust,' m/s');
   }
 
-  function renderStation(prefix, d) {
-    const fmt = (v, u) => v !== null && v !== undefined ? `${Math.round(v*10)/10}${u}` : '–';
-    const icon = wsymbIcon(d.wsymb);
-    const wdesc = d.wind !== null ? beaufortDesc(d.wind) : '–';
-    const wstr  = d.wind !== null ? `${Math.round(d.wind*10)/10} m/s ${d.wdir !== null ? degDir(d.wdir) : ''}` : '–';
-    document.getElementById(`${prefix}-temp`).textContent = d.temp !== null ? `${Math.round(d.temp*10)/10}°C` : '–°C';
-    document.getElementById(`${prefix}-desc`).textContent = `${icon} ${wdesc}`;
-    document.getElementById(`${prefix}-wind`).textContent = wstr;
-    document.getElementById(`${prefix}-pres`).textContent = fmt(d.pres, ' hPa');
-    document.getElementById(`${prefix}-hum`).textContent  = fmt(d.hum, '%');
-    document.getElementById(`${prefix}-gust`).textContent = fmt(d.gust, ' m/s');
-  }
-
-  async function loadWeather() {
-    try {
-      const [rData, tData] = await Promise.all([
-        fetchSMHI(56.6942, 12.6947),  // Ringenäs
-        fetchSMHI(56.6578, 12.7378),  // Tylösand
+  async function loadWeather(){
+    try{
+      const [rD,tD] = await Promise.all([
+        fetchSMHI(56.6942,12.6947),  // Ringenäs
+        fetchSMHI(56.6578,12.7378),  // Tylösand
       ]);
-      renderStation('r', rData);
-      renderStation('t', tData);
-      const ts = new Date().toLocaleString('sv-SE', {weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
-      document.getElementById('w-timestamp').textContent = `Live SMHI-prognos · ${ts}`;
-    } catch(e) {
-      document.getElementById('w-timestamp').textContent = 'Kunde inte hämta väderdata – försök igen';
-      console.error('SMHI fetch error:', e);
+      renderStation('r',rD);
+      renderStation('t',tD);
+      const ts = new Date().toLocaleString('sv-SE',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+      document.getElementById('w-timestamp').textContent=`Live SMHI-prognos · ${ts}`;
+    }catch(e){
+      document.getElementById('w-timestamp').textContent='Kunde inte hämta väderdata – försök igen';
+      console.error('SMHI:',e);
     }
   }
 
   loadWeather();
-  setInterval(loadWeather, 10 * 60 * 1000);
-
-  // ── PROJEKT med localStorage ──
-  const PROJ_KEY = 'lillarp_projects_v1';
-  const DEFAULT_PROJECTS = [
-    
-    { id:2, icon:'🌱', title:'Trädgårdsodling',   status:'sg', statusLabel:'Pågår',    desc:'Köksträdgård med jordgubbar, örter och grönsaker.',                        progress:45  },
-    
-    { id:4, icon:'☀️', title:'Solpaneler',         status:'sp', statusLabel:'Idé',      desc:'Undersöka solceller på taket för lägre elkostnad.',                        progress:0   },
-    
-
-  ];
-
-  function loadProjects() {
-    try {
-      const raw = localStorage.getItem(PROJ_KEY);
-      return raw ? JSON.parse(raw) : DEFAULT_PROJECTS;
-    } catch { return DEFAULT_PROJECTS; }
-  }
-
-  function saveProjects(projects) {
-    try { localStorage.setItem(PROJ_KEY, JSON.stringify(projects)); } catch {}
-  }
-
-  function renderProject(p) {
-    const el = document.createElement('div');
-    el.className = 'pjc';
-    el.dataset.id = p.id;
-    el.innerHTML = `
-      <button class="pj-del" title="Ta bort projekt" onclick="deleteProject(${p.id})">✕</button>
-      <div class="pjh">
-        <span class="pjt">${p.icon} ${p.title}</span>
-        <span class="pb ${p.status}" onclick="cycleStatus(${p.id})" style="cursor:pointer" title="Klicka för att byta status">${p.statusLabel}</span>
-      </div>
-      <p class="pjd">${p.desc}</p>
-      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem;">
-        <div class="pbar" style="flex:1"><div class="pfill" style="width:${p.progress}%"></div></div>
-        <span style="font-size:0.7rem;color:#aaa;width:2.5rem;text-align:right;">${p.progress}%</span>
-      </div>
-      <div style="display:flex;gap:0.3rem;margin-top:0.6rem;">
-        <input type="range" min="0" max="100" value="${p.progress}" style="flex:1;accent-color:var(--sea);cursor:pointer;" oninput="updateProgress(${p.id}, this.value, this)">
-      </div>`;
-    return el;
-  }
-
-  function renderAllProjects() {
-    const grid = document.getElementById('pg');
-    grid.innerHTML = '';
-    loadProjects().forEach(p => grid.appendChild(renderProject(p)));
-  }
-
-  function deleteProject(id) {
-    if (!confirm('Ta bort detta projekt?')) return;
-    const projects = loadProjects().filter(p => p.id !== id);
-    saveProjects(projects);
-    renderAllProjects();
-  }
-
-  const STATUS_CYCLE = [
-    { status:'sp', statusLabel:'Planerat' },
-    { status:'sg', statusLabel:'Pågår'    },
-    { status:'sd', statusLabel:'Klart'    },
-  ];
-
-  function cycleStatus(id) {
-    const projects = loadProjects();
-    const p = projects.find(x => x.id === id);
-    if (!p) return;
-    const idx = STATUS_CYCLE.findIndex(s => s.status === p.status);
-    const next = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
-    p.status = next.status;
-    p.statusLabel = next.statusLabel;
-    if (next.status === 'sd') p.progress = 100;
-    saveProjects(projects);
-    renderAllProjects();
-  }
-
-  function updateProgress(id, value, slider) {
-    const pct = parseInt(value);
-    // Update fill bar live without re-rendering whole grid
-    const card = slider.closest('.pjc');
-    card.querySelector('.pfill').style.width = pct + '%';
-    card.querySelector('span[style*="2.5rem"]').textContent = pct + '%';
-    // Debounce save
-    clearTimeout(slider._t);
-    slider._t = setTimeout(() => {
-      const projects = loadProjects();
-      const p = projects.find(x => x.id === id);
-      if (p) { p.progress = pct; saveProjects(projects); }
-    }, 400);
-  }
-
-  function ap() {
-    const title = prompt('Projektnamn:');
-    if (!title) return;
-    const desc = prompt('Beskrivning:') || '';
-    const projects = loadProjects();
-    const newId = Date.now();
-    projects.push({ id: newId, icon:'💡', title, status:'sp', statusLabel:'Planerat', desc, progress: 0 });
-    saveProjects(projects);
-    renderAllProjects();
-  }
-
-  renderAllProjects();
+  setInterval(loadWeather, 10*60*1000);
 </script>
 </body>
 </html>
