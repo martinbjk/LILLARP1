@@ -38,16 +38,16 @@
     .wb{animation:wd 10s ease-in-out infinite reverse;opacity:0.65;}
     .wc{animation:wd 13s ease-in-out infinite;opacity:0.45;}
     @keyframes wd{0%,100%{transform:translateX(0) scaleY(1)}50%{transform:translateX(-2%) scaleY(1.1)}}
-    .bird{position:absolute;font-size:2.2rem;opacity:0.55;animation:bfly 24s linear infinite;}
+    .bird{position:absolute;font-size:11rem;opacity:0.55;animation:bfly 24s linear infinite;filter:grayscale(1) brightness(1.6);}
     .bird:nth-child(1){top:21%;}
-    .bird:nth-child(2){top:27%;animation-duration:32s;animation-delay:-11s;font-size:1.6rem;opacity:0.38;}
-    .bird:nth-child(3){top:17%;animation-duration:28s;animation-delay:-19s;font-size:1.3rem;opacity:0.3;}
+    .bird:nth-child(2){top:27%;animation-duration:32s;animation-delay:-11s;font-size:8rem;opacity:0.5;}
+    .bird:nth-child(3){top:17%;animation-duration:28s;animation-delay:-19s;font-size:6rem;opacity:0.4;}
     @keyframes bfly{from{transform:translateX(-4vw)}to{transform:translateX(104vw)}}
     .hero-content{position:relative;z-index:10;text-align:center;padding:2rem;}
     .hero-eyebrow{font-size:0.7rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-bottom:1.2rem;font-weight:500;}
-    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(5.5rem,17vw,13rem);font-weight:300;line-height:0.88;color:white;text-shadow:0 4px 50px rgba(0,0,0,0.28),0 0 100px rgba(248,208,80,0.18);margin-bottom:1rem;letter-spacing:0.02em;}
-    .hero-title em{font-style:italic;color:#fff8c0;}
-    .hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.45rem;font-weight:300;color:rgba(255,255,255,0.82);margin-bottom:2.5rem;text-shadow:0 2px 24px rgba(0,0,0,0.3);}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(7rem,22vw,16rem);font-weight:300;line-height:0.88;color:#1a3a6a;text-shadow:0 4px 40px rgba(0,0,0,0.18),0 0 60px rgba(20,60,120,0.15);margin-bottom:1rem;letter-spacing:0.02em;}
+    .hero-title em{font-style:italic;color:#1a3a6a;}
+    .hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;font-weight:300;color:#1e3a5a;margin-bottom:2.5rem;text-shadow:0 2px 12px rgba(255,255,255,0.4);}
     .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.32);border-radius:2px;padding:0.5rem 1.2rem;font-size:0.8rem;letter-spacing:0.07em;color:rgba(255,255,255,0.88);backdrop-filter:blur(8px);}
     .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:0.3rem;color:rgba(255,255,255,0.45);font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;animation:sb 2.2s ease-in-out infinite;}
     @keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
@@ -106,17 +106,17 @@
     .mb:hover{background:var(--sea);color:white;border-color:var(--sea);}
 
     /* VÄDER */
-    .w-bg{background:linear-gradient(160deg,#1c3848 0%,#2a587a 50%,#183228 100%);padding:3rem 2rem;}
-    .w-bg .sh h2{color:white;}.w-bg .sh p{color:rgba(255,255,255,0.5);}.w-bg .div{background:linear-gradient(90deg,#a0d0e8,var(--dusk));}
+    .w-bg{background:linear-gradient(160deg,#e8f4f8 0%,#d0eaf5 50%,#e0f0e8 100%);padding:3rem 2rem;}
+    .w-bg .sh h2{color:#1a3a6a;}.w-bg .sh p{color:#3a6a8a;}.w-bg .div{background:linear-gradient(90deg,#3a7aa8,var(--fern));}
     .w-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:680px;margin:0 auto;}
-    .wc{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.11);border-radius:3px;padding:1.3rem;backdrop-filter:blur(10px);}
-    .ws{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#9ccce0;margin-bottom:0.6rem;}
-    .wt{font-family:'Cormorant Garamond',serif;font-size:3rem;line-height:1;color:white;margin-bottom:0.25rem;}
-    .wd{font-size:0.82rem;color:rgba(255,255,255,0.6);margin-bottom:1rem;}
+    .wc{background:rgba(255,255,255,0.7);border:1px solid rgba(26,58,106,0.15);border-radius:3px;padding:1.3rem;backdrop-filter:blur(10px);}
+    .ws{font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#3a7aa8;margin-bottom:0.6rem;}
+    .wt{font-family:'Cormorant Garamond',serif;font-size:5rem;line-height:1;color:#1a3a6a;margin-bottom:0.25rem;}
+    .wd{font-size:1rem;color:#2a5a7a;margin-bottom:1rem;font-weight:500;}
     .wg{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;}
-    .wi{background:rgba(255,255,255,0.05);border-radius:2px;padding:0.35rem 0.5rem;}
-    .wl{display:block;font-size:0.59rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:0.1rem;}
-    .wv{font-size:0.8rem;font-weight:600;color:white;}
+    .wi{background:rgba(26,58,106,0.06);border-radius:2px;padding:0.7rem 0.9rem;}
+    .wl{display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a9ab8;margin-bottom:0.3rem;}
+    .wv{font-size:1.35rem;font-weight:700;color:#1a3a6a;}
     .w-foot{text-align:center;margin-top:1rem;color:rgba(255,255,255,0.28);font-size:0.73rem;font-style:italic;}
 
     /* GALLERI */
@@ -368,7 +368,7 @@
     </div>
   </div>
   <div class="w-foot" style="margin-top:1.2rem;">
-    <a href="https://www.smhi.se/vader/observationer/sjovader" target="_blank" style="color:#9ccce0;font-size:0.75rem;">SMHI sjöväder →</a>
+    <a href="https://www.smhi.se/vader/observationer/sjovader" target="_blank" style="color:#1a3a6a;font-size:0.75rem;font-weight:600;">SMHI sjöväder →</a>
   </div>
 </div>
 
