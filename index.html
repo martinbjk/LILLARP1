@@ -396,7 +396,8 @@
     let best=j.timeSeries[0];
     for(const ts of j.timeSeries){if(new Date(ts.time).getTime()<=now)best=ts;else break;}
     const d=best.data;
-    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,gust:d.wind_gust_speed??d.gust_wind_speed??null,wsymb:d.symbol_code??d.weather_symbol??null};
+    console.log("SMHI fält:",Object.keys(d));
+    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,gust:d.wind_gust_speed??d.gust_wind_speed??d.wind_gust??null,wsymb:d.symbol_code??d.weather_symbol??null};
   }
   function renderStation(pfx,d){
     const fmt=(v,u)=>v!=null?`${Math.round(v*10)/10}${u}`:'–';
