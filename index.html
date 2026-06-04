@@ -16,6 +16,29 @@
     html{scroll-behavior:smooth;}
     body{font-family:"DM Sans",sans-serif;background:var(--cream);color:#2a2a2a;overflow-x:hidden;}
 
+    /* BEACH BACKGROUND */
+    body::before{
+      content:"";
+      position:fixed;inset:0;z-index:-1;pointer-events:none;
+      background-color:#f0ede4;
+      background-image:
+        /* vågor/vatten textur */
+        radial-gradient(ellipse 120px 40px at 15% 12%, rgba(180,220,240,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 80px 25px at 75% 8%, rgba(180,220,240,0.14) 0%, transparent 70%),
+        radial-gradient(ellipse 100px 35px at 45% 20%, rgba(180,220,240,0.12) 0%, transparent 70%),
+        /* sand-fläckar */
+        radial-gradient(ellipse 200px 80px at 80% 85%, rgba(210,185,140,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 150px 60px at 20% 90%, rgba(210,185,140,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 180px 70px at 55% 95%, rgba(210,185,140,0.15) 0%, transparent 70%);
+    }
+
+    /* BEACH EMOJI DECO — sjöstjärnor, krabbor, snäckor */
+    .beach-deco{
+      position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+      font-size:1.4rem;opacity:0.13;user-select:none;
+    }
+    .beach-deco span{position:absolute;}
+
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0.6rem 2rem;background:rgba(248,245,240,0.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(42,106,138,0.12);}
     .nav-logo{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:600;color:var(--sea);letter-spacing:0.04em;}
@@ -153,6 +176,7 @@
 </head>
 <body>
 
+<div class="beach-deco" id="beach-deco"></div>
 <nav>
   <div class="nav-logo">🌿 Lillarp</div>
   <ul class="nav-links">
@@ -346,9 +370,9 @@
   <div class="sh reveal"><h2>Bilder</h2><div class="div"></div><p>Lägg till era egna minnen från Lillarp</p></div>
   <div class="g-grid reveal" id="gg">
     <div class="gi gb" onclick="om(this)"><img src="DSC02555.JPG" alt="Lillarp"></div>
-    <div class="gi" onclick="om(this)"><img src="DSC01149.JPG" alt="BOKEN"'></div>
-    <div class="gi" onclick="om(this)"><img src="DSC02508.JPG" alt="BOKEN"'></div>
-    <div class="gi" onclick="om(this)"><img src="DSC02537.JPG" alt="BOKEN"'></div>
+    <div class="gi" onclick="om(this)"><div class="gp"><span>🌳</span><p>Stora Boken</p></div></div>
+    <div class="gi" onclick="om(this)"><div class="gp"><span>🌅</span><p>Kväll</p></div></div>
+    <div class="gi" onclick="om(this)"><div class="gp"><span>🌊</span><p>Havet</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🌲</span><p>Skogen</p></div></div>
     <div class="gi" onclick="om(this)"><div class="gp"><span>🍓</span><p>Sommar</p></div></div>
   </div>
@@ -363,6 +387,21 @@
 </footer>
 
 <script>
+  // BEACH DECO
+  (function(){
+    const emojis = ['🌊','🌊','⭐','🦀','🐚','🐚','⭐','🌊','🦀','🐚','⭐','🌊','🐚','🦀','⭐','🌊','🐚','🦀'];
+    const deco = document.getElementById('beach-deco');
+    emojis.forEach((e,i) => {
+      const s = document.createElement('span');
+      s.textContent = e;
+      s.style.left = (Math.random()*96+2)+'%';
+      s.style.top  = (Math.random()*96+2)+'%';
+      s.style.transform = 'rotate('+(Math.random()*360)+'deg)';
+      s.style.fontSize = (1.0+Math.random()*1.2)+'rem';
+      deco.appendChild(s);
+    });
+  })();
+
   const obs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
   document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
@@ -397,7 +436,7 @@
     for(const ts of j.timeSeries){if(new Date(ts.time).getTime()<=now)best=ts;else break;}
     const d=best.data;
     console.log("SMHI fält:",Object.keys(d));
-    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,gust:d.wind_gust_speed??d.gust_wind_speed??d.wind_gust??null,wsymb:d.symbol_code??d.weather_symbol??null};
+    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,gust:d.wind_gust_speed??d.gust_wind_speed??d.wind_gust??d.gust??null,wsymb:d.symbol_code??d.weather_symbol??null};
   }
   function renderStation(pfx,d){
     const fmt=(v,u)=>v!=null?`${Math.round(v*10)/10}${u}`:'–';
