@@ -35,7 +35,7 @@
     /* BEACH EMOJI DECO — sjöstjärnor, krabbor, snäckor */
     .beach-deco{
       position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
-      font-size:1.4rem;opacity:0.13;user-select:none;
+      font-size:1.8rem;opacity:0.28;user-select:none;
     }
     .beach-deco span{position:absolute;}
 
@@ -345,7 +345,6 @@
         <div class="wi"><span class="wl">Vind</span><span class="wv" id="r-wind">–</span></div>
         <div class="wi"><span class="wl">Lufttryck</span><span class="wv" id="r-pres">–</span></div>
         <div class="wi"><span class="wl">Fuktighet</span><span class="wv" id="r-hum">–</span></div>
-        <div class="wi"><span class="wl">Vindby</span><span class="wv" id="r-gust">–</span></div>
       </div>
     </div>
     <div class="wc">
@@ -356,7 +355,6 @@
         <div class="wi"><span class="wl">Vind</span><span class="wv" id="t-wind">–</span></div>
         <div class="wi"><span class="wl">Lufttryck</span><span class="wv" id="t-pres">–</span></div>
         <div class="wi"><span class="wl">Fuktighet</span><span class="wv" id="t-hum">–</span></div>
-        <div class="wi"><span class="wl">Vindby</span><span class="wv" id="t-gust">–</span></div>
       </div>
     </div>
   </div>
@@ -389,7 +387,7 @@
 <script>
   // BEACH DECO
   (function(){
-    const emojis = ['🌊','🌊','⭐','🦀','🐚','🐚','⭐','🌊','🦀','🐚','⭐','🌊','🐚','🦀','⭐','🌊','🐚','🦀'];
+    const emojis = ['🌊','🌊','⭐','🦀','🐚','🐚','⭐','🌊','🦀','🐚','⭐','🌊','🐚','🦀','⭐','🌊','🐚','🦀','🌊','⭐','🦀','🐚','🌊','⭐','🐚','🦀','🌊','🐚','⭐','🦀'];
     const deco = document.getElementById('beach-deco');
     emojis.forEach((e,i) => {
       const s = document.createElement('span');
@@ -397,7 +395,7 @@
       s.style.left = (Math.random()*96+2)+'%';
       s.style.top  = (Math.random()*96+2)+'%';
       s.style.transform = 'rotate('+(Math.random()*360)+'deg)';
-      s.style.fontSize = (1.0+Math.random()*1.2)+'rem';
+      s.style.fontSize = (1.6+Math.random()*2.0)+'rem';
       deco.appendChild(s);
     });
   })();
@@ -436,7 +434,7 @@
     for(const ts of j.timeSeries){if(new Date(ts.time).getTime()<=now)best=ts;else break;}
     const d=best.data;
     console.log("SMHI fält:",Object.keys(d));
-    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,gust:d.wind_gust_speed??d.gust_wind_speed??d.wind_gust??d.gust??null,wsymb:d.symbol_code??d.weather_symbol??null};
+    return{temp:d.air_temperature??null,wind:d.wind_speed??null,wdir:d.wind_from_direction??d.wind_direction??null,pres:d.air_pressure_at_mean_sea_level??d.air_pressure??null,hum:d.relative_humidity??null,wsymb:d.symbol_code??d.weather_symbol??null};
   }
   function renderStation(pfx,d){
     const fmt=(v,u)=>v!=null?`${Math.round(v*10)/10}${u}`:'–';
